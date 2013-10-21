@@ -1,0 +1,16 @@
+{
+    "contents" : "install.packages('randomForest')\nrequire('randomForest')\n\nconvertToFactors <- function(data){\n  data$SibSp.factor <- factor(data$SibSp)\n  data$Pclass.factor <- factor(data$Pclass)\n  data$Parch.factor <- factor(data$Parch)\n  convertToFactors <- data\n}\n\ntrain <- read.csv('train.csv')\ntest <- read.csv('test.csv')\n\ntest <- convertToFactors(test)\ntrain <- convertToFactors(train)\ntrain$Survived.factor <- as.factor(train$Survived)\n\nmod.logit <- glm(Survived.factor~Pclass.factor*Sex*Age+Fare+Embarked, data = train, family = binomial(link = \"logit\"))\n\ntest$Survived <- predict(mod.logit, newdata=test,type = \"response\")\ntest$Survived.binary <- 0\ntest$Survived.binary[test$Survived>0.5] <- 1\ntest$Survived <- test$Survived.binary\n\nwrite.table(test[,c(\"PassengerId\",\"Survived\")], file=\"predictionslogit.csv\",sep = \",\",row.names=FALSE,col.names = TRUE)",
+    "created" : 1382374092381.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3088992314",
+    "id" : "5B29FDF1",
+    "lastKnownWriteTime" : 1382374207,
+    "path" : "~/programming/titanic/process.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
