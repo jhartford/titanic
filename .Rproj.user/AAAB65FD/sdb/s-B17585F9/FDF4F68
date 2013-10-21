@@ -1,0 +1,21 @@
+{
+    "contents" : "",
+    "created" : 1382393815341.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "FDF4F68",
+    "lastKnownWriteTime" : 3613341783509266025,
+    "path" : null,
+    "properties" : {
+        "caption" : "train[train$Title %in% \"Miss.\", ]",
+        "contentUrl" : "content?title=train%5Btrain%24Title+%25in%25+%22Miss.%22%2C+%5D&file=c7d7e9c1f8644f9889efb6c2338b6878.htm",
+        "displayedObservations" : 182,
+        "displayedVariables" : 20,
+        "totalObservations" : 182,
+        "variables" : 19
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
