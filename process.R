@@ -7,18 +7,32 @@ require('randomForest')
 require('stringr')
 set.seed(2000)
 
+age.replace <- function(data){
+  data$Est.Age <- data$Age
+  for (title in levels(data$Title)){
+    ave <- mean(data[data$Title %in% title,]$Age,na.rm=TRUE)
+    data$Est.Age[(data$Title %in% c(title)) & (is.na(data$Est.Age))]<- ave
+  }
+  age.replace <- data
+}
+
 missingfactor <- function(fact){
   temp <- as.character()
 }
 
 convertToFactors <- function(data){
-  data$Title <- str_extract(data$Name,'(M[a-z]{1,})\\.')
+  data <- age.replace(data)
+  data$Title <- as.factor(str_extract(data$Name,'(M[a-z]{1,})\\.'))
+  data$Fair.bin <- cut(data$Fare,breaks=c(0,10,20,30,10000))
   data$SibSp.factor <- factor(data$SibSp)
   data$Pclass.factor <- factor(data$Pclass)
   data$Parch.factor <- factor(data$Parch)
   data$Age.factors <- as.character(cut(data$Age,breaks=c(0.34,16.3,32.2,48.2,64.1,80.1)))
   data$Age.factors[is.na(data$Age.factors)] <- "Missing"
   data$Age.factors <- as.factor(data$Age.factors)
+  data$Est.Age.factors <- as.character(cut(data$Est.Age,breaks=c(0.34,16.3,32.2,48.2,64.1,80.1)))
+  data$Est.Age.factors[is.na(data$Est.Age.factors)] <- "Missing"
+  data$Est.Age.factors <- as.factor(data$Est.Age.factors)
   convertToFactors <- data
 }
 
@@ -39,11 +53,12 @@ train$Survived.factor <- as.factor(train$Survived)
 train.idx <- sample(nrow(train),ceiling(nrow(train)*0.7))
 test.idx <- (1:nrow(train))[-train.idx]
 
-train.imputed <- rfImpute(Survived.factor ~ Pclass.factor + Sex + Age.factors+Fare+Embarked + Parch,train, ntree = 2000)
-train.imputednn <- rfImpute(Survived ~ Pclass+ Sex + Age +Fare+Embarked + Parch,train, ntree = 2000)
+#train.imputed <- rfImpute(Survived.factor ~ Pclass.factor + Sex + Age.factors+Fare+Embarked + Parch,train, ntree = 2000)
+#train.imputednn <- rfImpute(Survived ~ Pclass+ Sex + Age +Fare+Embarked + Parch,train, ntree = 2000)
 
 #mod.logit1 <- glm(Survived.factor~Pclass.factor*Sex*Age.factors+Fare+Embarked + Parch*Age.factors, data = train[train.idx,], family = binomial(link = "logit"))
-mod.logit2 <- glm(Survived.factor~Pclass.factor*Sex*Age.factors+Fare+Embarked + Parch + Title, data = train, family = binomial(link = "logit"))
+mod.logit2 <- glm(Survived.factor~Pclass.factor*Sex*Age.factors+Fare+Embarked + Parch + Title + Fair.bin, data = train, family = binomial(link = "logit"))
+mod.logit2 <- glm(Survived.factor~Pclass.factor*Sex*Est.Age.factors+Fare+Embarked + Parch, data = train, family = binomial(link = "logit"))
 mod.probit <- glm(Survived.factor~Pclass.factor*Sex*Age.factors+Fare+Embarked + Parch, data = train[train.idx,], family = binomial(link = "probit"))
 
 mod.logitimpute <- glm(Survived.factor~Pclass.factor*Sex*Age.factors+Fare+Embarked, data = train.imputed[train.idx,], family = binomial(link = "logit"))
