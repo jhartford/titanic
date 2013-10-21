@@ -10,11 +10,11 @@
     "path" : null,
     "properties" : {
         "caption" : "train",
-        "contentUrl" : "content?title=train&file=d396a69fbf124e6393b7df05b6c72d42.htm",
-        "displayedObservations" : 891,
+        "contentUrl" : "content?title=train&file=7160f9c4b2cc43d0b00ec44c4e961bae.htm",
+        "displayedObservations" : "891",
         "displayedVariables" : 12,
-        "totalObservations" : 891,
-        "variables" : 12
+        "totalObservations" : "891",
+        "variables" : "17"
     },
     "source_on_save" : false,
     "type" : "r_dataframe"

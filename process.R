@@ -8,6 +8,13 @@ convertToFactors <- function(data){
   convertToFactors <- data
 }
 
+testSolution <- function(model, testset, cutoff = 0.5){
+  values <- predict(model, newdata=testset,type = "response") 
+  values[is.na(values)] <- 0
+  values.bin <- (values>=cutoff)==testset$Survived
+  testSolution <- sum(values.bin)/nrow(testset)
+}
+
 train <- read.csv('train.csv')
 test <- read.csv('test.csv')
 
@@ -15,7 +22,12 @@ test <- convertToFactors(test)
 train <- convertToFactors(train)
 train$Survived.factor <- as.factor(train$Survived)
 
-mod.logit <- glm(Survived.factor~Pclass.factor*Sex*Age+Fare+Embarked, data = train, family = binomial(link = "logit"))
+train.idx <- sample(nrow(train),ceiling(nrow(train)*0.7))
+test.idx <- (1:nrow(train))[-train.idx]
+
+mod.logit <- glm(Survived.factor~Pclass.factor*Sex*Age+Fare+Embarked, data = train[train.idx,], family = binomial(link = "logit"))
+
+testSolution(mod.logit,train[test.idx,])
 
 test$Survived <- predict(mod.logit, newdata=test,type = "response")
 test$Survived.binary <- 0

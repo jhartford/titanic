@@ -1,0 +1,21 @@
+{
+    "contents" : "",
+    "created" : 1382388169750.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5C0E1B19",
+    "lastKnownWriteTime" : 140299438522880,
+    "path" : null,
+    "properties" : {
+        "caption" : "train.imputed",
+        "contentUrl" : "content?title=train.imputed&file=1cdb02eaafc54a2bb0029113eaa839e6.htm",
+        "displayedObservations" : 891,
+        "displayedVariables" : 6,
+        "totalObservations" : 891,
+        "variables" : 6
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
